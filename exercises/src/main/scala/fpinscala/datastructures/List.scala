@@ -60,13 +60,25 @@ object List { // `List` companion object. Contains functions for creating and wo
   def setHead[A](l: List[A], h: A): List[A] = {
     l match {
       case Nil => Cons(h, Nil)
-      case Cons(_, t) => Cons(h,t)
+      case Cons(_, t) => Cons(h, t)
     }
   }
 
-  def drop[A](l: List[A], n: Int): List[A] = sys.error("todo")
+  // TODO: discuss
+  def drop[A](l: List[A], n: Int): List[A] = {
+    (l, n) match {
+      case (Nil, _) => Nil
+      case (Cons(_, t), 1) => t
+      case (Cons(_, t), _) => drop(t, n - 1)
+    }
+  }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = sys.error("todo")
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
+    l match {
+      case Cons(h, t) if f(h) => dropWhile(t, f)
+      case _ => l
+    }
+  }
 
   def init[A](l: List[A]): List[A] = sys.error("todo")
 
@@ -82,10 +94,19 @@ object Chapter2 {
     val List = fpinscala.datastructures.List
     println(List(1,2,3))
 
+    println("> Tail")
     println(List.tail(List(1, 2, 3, 4)))
     println(List.tail(List()))
 
+    println("> SetHead")
     println(List.setHead(List(2, 3, 4),6))
     println(List.setHead(List(),1))
+
+    println("> Drop")
+    println(List.drop(List(1,2,3,4),2))
+    println(List.drop(List(),5))
+
+    println("> DropWhile")
+    println(List.dropWhile(List(4, 2, 1, 8), (x: Int) => x > 1))
   }
 }
