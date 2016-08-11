@@ -35,8 +35,24 @@ object MyModule {
   }
 
   // Exercise 1: Write a function to compute the nth fibonacci number
+  def fib(n: Int): Int = {
+    n match {
+      case 0 => 0
+      case 1 => 1
+      case _ => fib(n - 2) + fib(n - 1)
+    }
+  }
 
-  def fib(n: Int): Int = ???
+  @annotation.tailrec
+  def tailFib(prev: Int, result: Int, n: Int): Int = {
+    if (n < 1) prev
+    else if (n == 1) result
+    else tailFib(result, prev + result, n - 1)
+  }
+
+  print(fib(20))
+  print(tailFib(0, 1, 20))
+
 
   // This definition and `formatAbs` are very similar..
   private def formatFactorial(n: Int) = {
@@ -140,7 +156,26 @@ object PolymorphicFunctions {
 
   // Exercise 2: Implement a polymorphic function to check whether
   // an `Array[A]` is sorted
-  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = ???
+  def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean = {
+    @annotation.tailrec
+    def loop(n: Int, as: Array[A]): Boolean = {
+      if (n >= as.length - 1) true
+      else if (!ordered(as(n), as(n + 1))) false
+      else loop(n + 1, as)
+    }
+    loop(0, as)
+  }
+
+  def ascending(a: Int, b: Int): Boolean = {
+    a < b
+  }
+
+  def descending(a: Int, b: Int): Boolean = {
+    a > b
+  }
+
+  print(isSorted(Array(1, 5, 3), ascending))
+  print(isSorted(Array(10, 5, 3), descending))
 
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
@@ -152,14 +187,16 @@ object PolymorphicFunctions {
 
   // Note that `=>` associates to the right, so we could
   // write the return type as `A => B => C`
-  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
-    ???
+  def curry[A, B, C](f: (A, B) => C): A => B => C = {
+    (a: A) => (b: B) => f(a, b)
+  }
 
   // NB: The `Function2` trait has a `curried` method already
 
   // Exercise 4: Implement `uncurry`
-  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
-    ???
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C = {
+    (a: A, b: B) => f(a)(b)
+  }
 
   /*
   NB: There is a method on the `Function` object in the standard library,
@@ -173,6 +210,11 @@ object PolymorphicFunctions {
 
   // Exercise 5: Implement `compose`
 
-  def compose[A,B,C](f: B => C, g: A => B): A => C =
-    ???
+  def compose[A, B, C](f: B => C, g: A => B): A => C = {
+    (a: A) => f(g(a))
+  }
+
+  val f = (x: Double) => math.Pi / 2 - x
+  print(f andThen math.sin)
+  print(compose(f, math.sin))
 }
