@@ -50,7 +50,12 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  def tail[A](l: List[A]): List[A] = sys.error("todo")
+  def tail[A](l: List[A]): List[A] = {
+    l match {
+      case Nil => Nil
+      case Cons(_, t) => t
+    }
+  }
 
   def setHead[A](l: List[A], h: A): List[A] = sys.error("todo")
 
@@ -65,4 +70,12 @@ object List { // `List` companion object. Contains functions for creating and wo
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+}
+
+object Chapter2 {
+  def main(args: Array[String]): Unit = {
+    val List = fpinscala.datastructures.List
+    println(List.tail(List(1, 2, 3, 4)))
+    println(List.tail(List()))
+  }
 }
