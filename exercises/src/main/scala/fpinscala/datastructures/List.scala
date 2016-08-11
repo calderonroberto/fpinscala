@@ -88,7 +88,9 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
   }
 
-  def length[A](l: List[A]): Int = sys.error("todo")
+  def length[A](l: List[A]): Int = {
+    foldRight(l, 0)((l, n) => n + 1)
+  }
 
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
 
@@ -98,24 +100,31 @@ object List { // `List` companion object. Contains functions for creating and wo
 object Chapter2 {
   def main(args: Array[String]): Unit = {
     val List = fpinscala.datastructures.List
-    println(List(1,2,3))
+    println(List(1, 2, 3))
 
     println("> Tail")
     println(List.tail(List(1, 2, 3, 4)))
     println(List.tail(List()))
 
     println("> SetHead")
-    println(List.setHead(List(2, 3, 4),6))
-    println(List.setHead(List(),1))
+    println(List.setHead(List(2, 3, 4), 6))
+    println(List.setHead(List(), 1))
 
     println("> Drop")
-    println(List.drop(List(1,2,3,4),2))
-    println(List.drop(List(),5))
+    println(List.drop(List(1, 2, 3, 4), 2))
+    println(List.drop(List(), 5))
 
     println("> DropWhile")
     println(List.dropWhile(List(4, 2, 1, 8), (x: Int) => x > 1))
 
     println("> Init")
-    println(List.init(List(1,2,3,4,5)))
+    println(List.init(List(1, 2, 3, 4, 5)))
+
+    println("> foldRight")
+    println(List.foldRight(List(1, 2, 3), Nil: List[Int])(Cons(_, _)))
+
+    println("> length")
+    println(List.length(List(0, 1, 3, 4, 5)))
+
   }
 }
