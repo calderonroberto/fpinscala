@@ -57,7 +57,12 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
   }
 
-  def setHead[A](l: List[A], h: A): List[A] = sys.error("todo")
+  def setHead[A](l: List[A], h: A): List[A] = {
+    l match {
+      case Nil => Cons(h, Nil)
+      case Cons(_, t) => Cons(h,t)
+    }
+  }
 
   def drop[A](l: List[A], n: Int): List[A] = sys.error("todo")
 
@@ -75,7 +80,12 @@ object List { // `List` companion object. Contains functions for creating and wo
 object Chapter2 {
   def main(args: Array[String]): Unit = {
     val List = fpinscala.datastructures.List
+    println(List(1,2,3))
+
     println(List.tail(List(1, 2, 3, 4)))
     println(List.tail(List()))
+
+    println(List.setHead(List(2, 3, 4),6))
+    println(List.setHead(List(),1))
   }
 }
