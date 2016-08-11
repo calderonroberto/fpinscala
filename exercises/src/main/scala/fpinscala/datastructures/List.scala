@@ -80,7 +80,13 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
   }
 
-  def init[A](l: List[A]): List[A] = sys.error("todo")
+  def init[A](l: List[A]): List[A] = {
+    l match {
+      case Nil => Nil
+      case Cons(_, Nil) => Nil // remove last element
+      case Cons(h,t) => Cons(h,init(t))
+    }
+  }
 
   def length[A](l: List[A]): Int = sys.error("todo")
 
@@ -108,5 +114,8 @@ object Chapter2 {
 
     println("> DropWhile")
     println(List.dropWhile(List(4, 2, 1, 8), (x: Int) => x > 1))
+
+    println("> Init")
+    println(List.init(List(1,2,3,4,5)))
   }
 }
