@@ -92,7 +92,13 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(l, 0)((l, n) => n + 1)
   }
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
+  @annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = {
+    l match {
+      case Nil => z
+      case Cons(h, t) => foldLeft(t, f(z, h))(f)
+    }
+  }
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 }
@@ -125,6 +131,9 @@ object Chapter2 {
 
     println("> length")
     println(List.length(List(0, 1, 3, 4, 5)))
+
+    println("> FoldLeft")
+    println(List.foldLeft(List(4,2,3), 0)(_ + _))
 
   }
 }
