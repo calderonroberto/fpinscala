@@ -100,6 +100,16 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
   }
 
+  def sumleft(ns: List[Int]) =
+    foldLeft(ns,0)(_+_)
+
+  def productleft(ns: List[Double]) =
+    foldLeft(ns, 1.0)(_*_)
+
+  def lengthleft[A](ns: List[A]): Int = {
+    foldLeft(ns, 0)((n, l) => n + 1)
+  }
+
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 }
 
@@ -134,6 +144,15 @@ object Chapter2 {
 
     println("> FoldLeft")
     println(List.foldLeft(List(4,2,3), 0)(_ + _))
+
+    println("> SumLeft")
+    println(List.sumleft(List(4, 1, 5)))
+
+    println("> ProdLeft")
+    println(List.productleft(List(2, 3, 3)))
+
+    println("> LengthLeft")
+    println(List.length(List(0, 1, 2, 3, 4, 5)))
 
   }
 }
