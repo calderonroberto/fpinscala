@@ -106,9 +106,11 @@ object List { // `List` companion object. Contains functions for creating and wo
   def productleft(ns: List[Double]) =
     foldLeft(ns, 1.0)(_*_)
 
-  def lengthleft[A](ns: List[A]): Int = {
+  def lengthleft[A](ns: List[A]): Int =
     foldLeft(ns, 0)((n, l) => n + 1)
-  }
+
+  def reverse[A](l:List[A]): List[A] =
+    foldLeft(l, List[A]())((b, a) => Cons(a, b)) // Damn this was fun
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 }
@@ -118,41 +120,43 @@ object Chapter2 {
     val List = fpinscala.datastructures.List
     println(List(1, 2, 3))
 
-    println("> Tail")
+    println("--- (2) Tail")
     println(List.tail(List(1, 2, 3, 4)))
     println(List.tail(List()))
 
-    println("> SetHead")
+    println("--- (3) SetHead")
     println(List.setHead(List(2, 3, 4), 6))
     println(List.setHead(List(), 1))
 
-    println("> Drop")
+    println("--- (4) Drop")
     println(List.drop(List(1, 2, 3, 4), 2))
     println(List.drop(List(), 5))
 
-    println("> DropWhile")
+    println("--- (5) DropWhile")
     println(List.dropWhile(List(4, 2, 1, 8), (x: Int) => x > 1))
 
-    println("> Init")
+    println("--- (6) Init")
     println(List.init(List(1, 2, 3, 4, 5)))
 
-    println("> foldRight")
+    println("--- (8) foldRight")
     println(List.foldRight(List(1, 2, 3), Nil: List[Int])(Cons(_, _)))
 
-    println("> length")
+    println("--- (9) length")
     println(List.length(List(0, 1, 3, 4, 5)))
 
-    println("> FoldLeft")
+    println("--- (10) FoldLeft")
     println(List.foldLeft(List(4,2,3), 0)(_ + _))
 
-    println("> SumLeft")
+    println("--- (11) SumLeft")
     println(List.sumleft(List(4, 1, 5)))
 
-    println("> ProdLeft")
+    println("--- (11) ProdLeft")
     println(List.productleft(List(2, 3, 3)))
 
-    println("> LengthLeft")
+    println("--- (11) LengthLeft")
     println(List.length(List(0, 1, 2, 3, 4, 5)))
 
+    println("--- (12) Reverse")
+    println(List.reverse(List(5, 4, 3, 2, 1)))
   }
 }
