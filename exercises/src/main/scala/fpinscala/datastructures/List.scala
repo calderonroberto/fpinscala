@@ -162,7 +162,7 @@ object Chapter2 {
     println("--- (12) Reverse")
     println(List.reverse(List(5, 4, 3, 2, 1)))
 
-    println("--- (13) TODO")
+    println("--- (13) TODO Discuss?")
     println("implement foldLeft in terms of foldRight")
 
     println("--- (14) Fold Append")
