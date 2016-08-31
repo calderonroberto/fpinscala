@@ -136,6 +136,15 @@ trait Stream[+A] {
       case (Empty, Cons(h, t)) => Some(f(Option.empty[A], Some(h())) -> (empty[A] -> t()))
       case (Cons(h1, t1), Cons(h2, t2)) => Some(f(Some(h1()), Some(h2())) -> (t1() -> t2()))
     }
+
+  def startsWith[A](s: Stream[A]): Boolean //use zipall and takewhile
+
+  def tails: Stream[Stream[A]] =
+  unfold(this){
+    case Empty => None
+    case s => Some((s, s.drop(1)))
+  } append Stream(empty)
+
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
