@@ -97,6 +97,25 @@ trait Stream[+A] {
     }
   }
 
+  def fibUnfold: Stream[Int] = unfold((0,1)){case(a,b) => Some(a,(b,a+b))} //meh, had to peek
+  def fromUnfold(n: Int): Stream[Int] = unfold(n)(n => Some(n, n+1))
+  def constantUnfold[A](a: A): Stream[A] = unfold(a)(_ => Some(a,a))
+  def onesUnfold= unfold(1)(_ => Some(1,1))
+
+  def mapUnfold[B](f: A=>B): Stream[B] = unfold(this){
+    case Cons(h,t) => Some(f(h()), t())
+    case _ => None
+  }
+  def takeUnfold(n: Int): Stream[A] = unfold(this, n){
+    case (Cons(h,t), 1) => Some(h(), (empty,0))
+    case (Cons(h,t), n) if n>1 => Some(h(), (t(), n-1))
+    case _ => None
+  }
+
+  //TODO:
+  def takeWhileUnfold
+  def zipWithUnfold
+  def zipAllUnfold
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
