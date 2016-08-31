@@ -72,8 +72,6 @@ trait Stream[+A] {
 
   def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(empty[B])((h,t) => f(h) append t)
 
-  def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
-
   def constant[A](a: A): Stream[A] = cons(a, constant(a))
 
   def constant2[A](a: A): Stream[A] = {
@@ -137,7 +135,12 @@ trait Stream[+A] {
       case (Cons(h1, t1), Cons(h2, t2)) => Some(f(Some(h1()), Some(h2())) -> (t1() -> t2()))
     }
 
-  def startsWith[A](s: Stream[A]): Boolean //use zipall and takewhile
+  def startsWith[A](s: Stream[A]): Boolean =
+    zipAll(s) takeWhile {
+    case (_, b) => b.isDefined
+  } forAll{
+    case (a, b) => a == b
+  }
 
   def tails: Stream[Stream[A]] =
   unfold(this){
