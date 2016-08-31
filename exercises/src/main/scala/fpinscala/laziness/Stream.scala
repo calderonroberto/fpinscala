@@ -92,7 +92,7 @@ trait Stream[+A] {
 
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
     f(z) match {
-      case Some((a,b)) => cons(a, unfold(b)(f)) // this ((a,b)) threw me off, it's ONE parameter, not two
+      case Some((h,t)) => cons(h, unfold(t)(f)) // this ((a,b)) threw me off, it's ONE parameter, not two
       case _ => empty
     }
   }
@@ -112,10 +112,14 @@ trait Stream[+A] {
     case _ => None
   }
 
+  def takeWhileUnfold(p: A=> Boolean): Stream[A] =
+    unfold(this){
+    case Cons(h,t) if p(h()) => Some(h(), t())
+    case _ => None
+  }
   //TODO:
-  def takeWhileUnfold
-  def zipWithUnfold
-  def zipAllUnfold
+  //def zipWithUnfold
+  //def zipAllUnfold
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
