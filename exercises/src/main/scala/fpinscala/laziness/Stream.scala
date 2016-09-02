@@ -23,7 +23,7 @@ trait Stream[+A] {
       case _ => z
     }
 
-  def exists(p: A => Boolean): Boolean =   //TODO: I don't get this explanation, how does 'b' fold the tail? how does scala know to run fold on it?
+  def exists(p: A => Boolean): Boolean =
     foldRight(false)((a, b) => p(a) || b) // Here `b` is the unevaluated recursive step that folds the tail of the stream. If `p(a)` returns `true`, `b` will never be evaluated and the computation terminates early.
 
   @annotation.tailrec
@@ -56,7 +56,7 @@ trait Stream[+A] {
 
   def forAll(p: A => Boolean): Boolean = foldRight(true)((h,t) => p(h) && t)
 
-  def takeWhileFoldRight(p: A => Boolean): Stream[A] = foldRight(empty[A])((h,t) => if (p(h)) cons(h,t) else empty[A] ) // TODO: i kind of get it, but i'm still missing why cons(h,t), 't' will call fold right
+  def takeWhileFoldRight(p: A => Boolean): Stream[A] = foldRight(empty[A])((h,t) => if (p(h)) cons(h,t) else empty[A] )
 
   def headOption: Option[A] = foldRight(None: Option[A])((h,t) => Some(h)) //TODO:  is Empty[A] == None: Option[A]?
 
@@ -68,7 +68,7 @@ trait Stream[+A] {
   def filter(f: A => Boolean): Stream[A] = foldRight(empty[A])((h, t) => if (f(h)) cons(h, t) else t)
 
   //append adds the tail to
-  def append[B>:A](f: => Stream[B]): Stream[B] = foldRight(f)((h,t) => cons(h,t)) //TODO: seriously, how does t call append again?
+  def append[B>:A](f: => Stream[B]): Stream[B] = foldRight(f)((h,t) => cons(h,t))
 
   def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(empty[B])((h,t) => f(h) append t)
 
