@@ -76,11 +76,13 @@ object RNG {
         (l, r)
       else {
         val (x, r1) = r.nextInt
-        go(c-1, r1, x :: l)
+        go(c - 1, r1, x :: l)
       }
     }
     go(count, rng, List())
   }
+
+  def doubleWithMap: Rand[Double] = map(nonNegativeInt)(_ / (Int.MaxValue.toDouble + 1))
 
   def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
