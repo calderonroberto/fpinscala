@@ -59,7 +59,28 @@ object RNG {
     ((d1, d2, d3), r3)
   }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    if (count == 0)
+      (List(), rng)
+    else {
+      val (x1, r1) = rng.nextInt
+      val (x2, r2) = ints(count - 1)(r1)
+      (x1 :: x2, r2)
+    }
+  }
+
+  def intsRecursive(count: Int)(rng: RNG): (List[Int], RNG) = {
+    @annotation.tailrec
+    def go(c: Int, r: RNG, l: List[Int]): (List[Int], RNG) = {
+      if (c == 0)
+        (l, r)
+      else {
+        val (x, r1) = r.nextInt
+        go(c-1, r1, x :: l)
+      }
+    }
+    go(count, rng, List())
+  }
 
   def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
