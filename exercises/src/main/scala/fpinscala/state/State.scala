@@ -91,6 +91,9 @@ object RNG {
       (f(a,b), rng3)
     }
 
+  def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] =
+    map2(ra,rb)((_,_))
+
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = ???
 
   def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
