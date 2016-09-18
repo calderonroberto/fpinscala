@@ -86,15 +86,22 @@ object RNG {
 
   def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
     rng => {
-      val(a, rng2) = ra(rng)
-      val(b, rng3) = rb(rng2)
-      (f(a,b), rng3)
+      val (a, rng2) = ra(rng)
+      val (b, rng3) = rb(rng2)
+      (f(a, b), rng3)
     }
 
-  def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] =
-    map2(ra,rb)((_,_))
+  def both[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] =
+    map2(ra, rb)((_, _))
 
-  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = ???
+  def randIntDoubleWithBoth: Rand[(Int, Double)] =
+    both(int, double)
+
+  def randDoubleIntWithBoth: Rand[(Double, Int)] =
+    both(double, int)
+
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
+    fs.foldRight(unit(List[A]()))((x, accumulator) => map2(x, accumulator)(_ :: _))
 
   def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
 }
