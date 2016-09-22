@@ -115,6 +115,7 @@ object RNG {
       if (i + (n-1) - mod >= 0)
         unit(mod)
       else
+        nonNegativeLessThan(n)
     }
   }
 
