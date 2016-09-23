@@ -181,6 +181,14 @@ object State {
 * State Machine
 * */
 
+
+/*
+* inserting a coin into a locked machine will cause it to unlock if there's any candy left
+* turning the knob on an unlocked machine will caus it to dispense candy and become locked
+* turning the knob on a locked machine or inserting a coin into an unlocked machin does nothing
+* a machine that's out of candy ignores all inputs
+* */
+
 sealed trait Input
 
 case object Coin extends Input
